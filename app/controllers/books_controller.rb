@@ -11,31 +11,38 @@ class BooksController < ApplicationController
   # GET /books/1
   # GET /books/1.json
   def show
-  end
+   @book = Book.find(params[:id])
+ end
 
   # GET /books/1/edit
   def edit
+    @book = Book.find(params[:id])
   end
 
   # POST /books
   # POST /books.json
   def create
+    @books = Book.all
     @book = Book.new(book_params)
     if @book.save
       redirect_to @book, notice: 'Book was successfully created.'
     else
-      render :index
+      render 'index'
     end
   end
 
   # PATCH/PUT /books/1
   # PATCH/PUT /books/1.json
   def update
-    if @book.update()
-      redirect_to @book, notice: 'Book was successfully updated.'
+
+    @book = Book.find(params[:id])
+
+    if @book.update(book_params)
+      redirect_to book_path(@book.id), notice: 'Book was successfully updated.'
     else
-      render :edit
+      render 'edit'
     end
+
   end
 
   # DELETE /books/1
@@ -55,4 +62,4 @@ class BooksController < ApplicationController
     def book_params
       params.require(:book).permit(:title, :body)
     end
-end
+  end
